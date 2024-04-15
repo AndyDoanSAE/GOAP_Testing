@@ -5,35 +5,37 @@ using UnityEngine;
 
 public class ActionBase : MonoBehaviour
 {
+    public List<string> canSatisfy;
+    
     private void Start()
     {
         // get components if needed
     }
 
-    protected virtual void WakeUp()
+    public virtual void WakeUp()
     {
-        
+        // if we want the actions to reset every time they wake up uncomment below
+        //ResetAction();
     }
 
-    protected virtual void SleepAction()
+    public virtual void SleepAction()
     {
-        
+        // puts the action in a sleeping state
     }
 
-    protected virtual void ResetAction()
+    public virtual void ResetAction()
     {
-        
+        // resets the action to its default state
     }
 
-    protected virtual void RunAction()
+    public virtual void RunAction()
     {
-        
+        // runs the action
     }
 
-    protected virtual int ActionCost()
+    public virtual int ActionCost()
     {
+        // returns the cost of the action
         return 0;
     }
-    
-    
 }

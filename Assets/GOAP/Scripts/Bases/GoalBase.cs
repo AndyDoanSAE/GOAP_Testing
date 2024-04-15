@@ -1,26 +1,52 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GoalBase : MonoBehaviour
 {
-    protected virtual void RunAction()
+    [Range(0, 100)]
+    public int priority = 0;
+    public string uniqueName = "Goal name";
+    
+    public ActionBase activeAction;
+    
+    public virtual void UpdatePriority()
     {
-
+        // set the priority of the goal
     }
 
-    protected virtual void WakeUp()
+    public virtual bool CanRun()
     {
-        
+        // returns true if the goal can be run, false if not
+        return true;
     }
 
-    protected virtual void Sleep()
+    public virtual void RunGoal()
     {
-        
+        // runs the goal
+        activeAction.RunAction();
     }
 
-    protected virtual void Reset()
+    public virtual void ChangeAction(ActionBase newAction)
     {
-        
+        // changes the action to the new action
+        if (activeAction != null)
+            activeAction.SleepAction();
+            
+        activeAction = newAction;
+        activeAction.ResetAction();
+    }
+
+    public virtual void WakeUp()
+    {
+        // wakes up the goal
+        activeAction.WakeUp();
+    }
+
+    public virtual void GoToSleep()
+    {
+        // puts the goal to sleep
+        activeAction.SleepAction();
     }
 }
