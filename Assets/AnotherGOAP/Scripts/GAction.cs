@@ -50,6 +50,7 @@ public abstract class GAction : MonoBehaviour
 
     public bool IsAchievable()
     {
+        // if in trouble then change states
         return true;
     }
 

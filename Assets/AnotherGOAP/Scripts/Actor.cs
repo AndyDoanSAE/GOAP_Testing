@@ -9,5 +9,8 @@ public class Actor : GAgent
         base.Start();
         SubGoal s1 = new SubGoal("wander", 1, true);
         goals.Add(s1, 3);
+        
+        SubGoal s2 = new SubGoal("escape", 1, true);
+        goals.Add(s2, 5);
     }
 }

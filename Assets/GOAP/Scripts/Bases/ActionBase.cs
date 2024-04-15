@@ -7,12 +7,7 @@ public class ActionBase : MonoBehaviour
 {
     private void Start()
     {
-        throw new NotImplementedException();
-    }
-
-    private void Update()
-    {
-        throw new NotImplementedException();
+        // get components if needed
     }
 
     protected virtual void WakeUp()
