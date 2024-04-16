@@ -26,7 +26,7 @@ public class ActionWander : ActionBase
     public override void Start()
     {
         base.Start();
-        _targetLocation = new Vector3(Random.Range(-wanderRadius, wanderRadius),transform.position.y ,Random.Range(-wanderRadius, wanderRadius));
+        _targetLocation = new Vector3(Random.Range(-wanderRadius, wanderRadius), transform.position.y, Random.Range(-wanderRadius, wanderRadius));
         hasArrivedAtDestination = false;
         isChoosingDestination = false;
     }
@@ -48,6 +48,7 @@ public class ActionWander : ActionBase
         {
             base.RunAction();
             isChoosingDestination = false;
+            transform.rotation = Quaternion.LookRotation(_targetLocation - transform.position);
             transform.position = Vector3.MoveTowards(transform.position, _targetLocation, agent.moveSpeed * Time.deltaTime);
         }
 
