@@ -5,37 +5,41 @@ using UnityEngine;
 
 public class ActionBase : MonoBehaviour
 {
+    [Tooltip("List of goals that this action can satisfy")]
     public List<string> canSatisfy;
     
-    private void Start()
+    [Tooltip("How much stamina this action requires")]
+    public float staminaCost;
+    
+    [HideInInspector] public GoapAgent agent;
+    
+    public virtual void Start()                                                                                         // this is a function that is called by the agent when it starts
     {
-        // get components if needed
+        agent = GetComponent<GoapAgent>();
     }
 
-    public virtual void WakeUp()
+    public virtual void WakeAction()                                                                                    // this is a function that is called by the agent when it wakes up
     {
-        // if we want the actions to reset every time they wake up uncomment below
-        //ResetAction();
+        ResetAction();
     }
 
-    public virtual void SleepAction()
+    public virtual void SleepAction()                                                                                   // this is a function that is called by the agent when it sleeps the action
     {
-        // puts the action in a sleeping state
+          
     }
 
-    public virtual void ResetAction()
+    public virtual void ResetAction()                                                                                   // this is a function that is called by the agent when it resets the action
     {
-        // resets the action to its default state
+        
     }
 
-    public virtual void RunAction()
+    public virtual void RunAction()                                                                                     // this is a function that is called by the agent when it runs the action
     {
-        // runs the action
+        agent.currentStamina -= staminaCost * Time.deltaTime;
     }
 
-    public virtual int ActionCost()
+    public virtual int ActionCost()                                                                                     // this is a function that is called by the agent when it determines the cost of the action
     {
-        // returns the cost of the action
         return 0;
     }
 }

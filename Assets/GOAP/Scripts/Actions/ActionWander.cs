@@ -1,52 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class ActionWander : ActionBase
 {
-    private Vector3 _startingLocation;
-    private Vector3 _targetLocation;
+    private Vector3 _targetLocation;    // the location the agent is trying to move to
 
-    public float currentStamina;
-    public float maxStamina = 50f;
-    public float staminaCost = 2f;
-    public float staminaRegen = 1f;
-    
-    public float destinationThreshold = 0.1f;
-    public float moveSpeed = 1f;
-    public float wanderRadius = 10f;
-    
-    public override void WakeUp()
-    {
-        currentStamina = maxStamina;
-        ResetAction();
-    }
+    [SerializeField, Tooltip("The distance the agent needs to be from the target location before it chooses a new target")]
+    private float destinationThreshold = 0.1f;
 
-    public override void SleepAction()
-    {
-        
-    }
+    [SerializeField, Tooltip("The radius the agent can wander in")]
+    private float wanderRadius = 10f;
+    
+    [SerializeField, Tooltip("The minimum time the agent waits before choosing a new target location")] 
+    private float minWaitTime = 1f;
+    
+    [SerializeField, Tooltip("The maximum time the agent waits before choosing a new target location")]
+    private float maxWaitTime = 3f;
 
     public override void ResetAction()
     {
-        _startingLocation = transform.position;
-        _targetLocation = _startingLocation + Random.insideUnitSphere * wanderRadius;
+        _targetLocation = new Vector3(Random.Range(-wanderRadius, wanderRadius),transform.position.y ,Random.Range(-wanderRadius, wanderRadius));
+        Debug.Log("New target location: " + _targetLocation);
     }
 
     public override void RunAction()
     {
-        if (currentStamina > 0)
-        {
-            currentStamina -= staminaCost * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, _targetLocation, moveSpeed * Time.deltaTime);
-            if (Vector3.Distance(transform.position, _targetLocation) <= destinationThreshold)
-                ResetAction();
-        }
-        else
-        {
-            currentStamina += staminaRegen * Time.deltaTime;
-        }
+        base.RunAction();
+        transform.position = Vector3.MoveTowards(transform.position, _targetLocation, agent.moveSpeed * Time.deltaTime);
 
+        if (Vector3.Distance(transform.position, _targetLocation) <= destinationThreshold)
+        {
+            Invoke(nameof(ResetAction), Random.Range(minWaitTime, maxWaitTime));
+        }
     }
 }

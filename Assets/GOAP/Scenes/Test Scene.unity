@@ -333,6 +333,11 @@ GameObject:
   - component: {fileID: 1945245467}
   - component: {fileID: 1945245466}
   - component: {fileID: 1945245465}
+  - component: {fileID: 1945245469}
+  - component: {fileID: 1945245471}
+  - component: {fileID: 1945245470}
+  - component: {fileID: 1945245473}
+  - component: {fileID: 1945245472}
   m_Layer: 0
   m_Name: Agent
   m_TagString: Untagged
@@ -428,6 +433,95 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1945245469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1945245464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3fac46c6260d63499525b08c6fab244, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _activeGoal: {fileID: 0}
+  currentStamina: 0
+  maxStamina: 200
+  staminaRegen: 6
+  moveSpeed: 5
+--- !u!114 &1945245470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1945245464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6f46914ec3987543bab503a643665f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  priority: 50
+  uniqueName: Wander
+  idleTime: 0
+  idleTimeThreshold: 20
+  idleThresholdReached: 0
+  activeAction: {fileID: 0}
+  agent: {fileID: 0}
+--- !u!114 &1945245471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1945245464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0f9045c1d4bb2842aaab29c9264c5b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canSatisfy:
+  - Wander
+  staminaCost: 10
+  agent: {fileID: 0}
+  destinationThreshold: 0.1
+  wanderRadius: 10
+--- !u!114 &1945245472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1945245464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71504522efbbdcc408d3e7e576d2eb95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canSatisfy:
+  - Rest
+  staminaCost: 0
+  agent: {fileID: 0}
+--- !u!114 &1945245473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1945245464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cac7d8e525c2f0b4eae7fb32d060bfbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  priority: 0
+  uniqueName: Rest
+  idleTime: 0
+  idleTimeThreshold: 10
+  idleThresholdReached: 0
+  activeAction: {fileID: 0}
+  agent: {fileID: 0}
 --- !u!1 &2066178636
 GameObject:
   m_ObjectHideFlags: 0
