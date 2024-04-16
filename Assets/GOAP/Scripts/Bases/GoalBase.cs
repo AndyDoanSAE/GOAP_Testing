@@ -28,7 +28,7 @@ public class GoalBase : MonoBehaviour
         agent = GetComponent<GoapAgent>();
     }
 
-    public virtual void Update()
+    public virtual void Update()                                                                                        // this is a function that is called by the agent every frame
     {
         // if the agent is not tired and the goal has not been run in a while
         if (!idleThresholdReached)
