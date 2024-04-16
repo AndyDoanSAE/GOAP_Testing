@@ -5,14 +5,9 @@ using UnityEngine;
 
 public class GoalRest : GoalBase
 {
-    public override void WakeUp()
-    {
-        base.WakeUp();
-    }
-    
-    
     public override void UpdatePriority()
     {
+        // change the priority based on the agent's current stamina
         if (agent.currentStamina < agent.maxStamina)
         {
             priority = Mathf.RoundToInt(100 - agent.currentStamina / agent.maxStamina * 100);
@@ -21,11 +16,7 @@ public class GoalRest : GoalBase
 
     public override bool CanRun()
     {
+        // if the agent's current stamina is 0 or the idle threshold has been reached, the goal can be run
         return agent.currentStamina == 0 || idleThresholdReached;
-    }
-
-    public override void GoToSleep()
-    {
-        base.GoToSleep();
     }
 }

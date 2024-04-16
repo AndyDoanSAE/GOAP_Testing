@@ -1,17 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GoapAgent : MonoBehaviour
 {
-    private List<GoalBase> _goals;
-    private List<ActionBase> _actions;
+    private List<GoalBase> _goals;                                                                                      // list of all goals
+    private List<ActionBase> _actions;                                                                                  // list of all actions
 
-    [SerializeField] public GoalBase _activeGoal;
+    [Tooltip("The current active goal.")] 
+    public GoalBase activeGoal;
     
+    [Header("Movement Settings")]
+    [Tooltip("The current stamina of the agent.")]
     public float currentStamina;
+    [Tooltip("The maximum stamina of the agent.")]
     public float maxStamina = 50f;
+    [Tooltip("How much stamina the agent regains every second.")]
     public float staminaRegen = 1f;
+    [Tooltip("How fast the agent moves.")]
     public float moveSpeed = 5f;
     
     private void Start()
@@ -21,20 +28,22 @@ public class GoapAgent : MonoBehaviour
         
         currentStamina = maxStamina;
     }
-
-    // Update is called once per frame
+    
     private void Update()
     {
+        // if the current stamina goes below 0, set it to 0
         if (currentStamina < 0)
             currentStamina = 0;
         
+        // if the current stamina goes past the maximum, set it to the maximum
         if (currentStamina >= maxStamina)
             currentStamina = maxStamina;
         
         DetermineGoal();
 
-        if (_activeGoal)
-            _activeGoal.RunGoal();
+        // if there is an active goal, run it
+        if (activeGoal)
+            activeGoal.RunGoal();
     }
 
     private void DetermineGoal()
@@ -43,14 +52,14 @@ public class GoapAgent : MonoBehaviour
         GoalBase bestGoal = null;
         ActionBase bestAction = null;
 
-        // if the active goal is not null and can run, use it
-        if (_activeGoal != null && _activeGoal.CanRun())
+        // if there is an active goal and it can run, use it
+        if (activeGoal != null && activeGoal.CanRun())
         {
-            bestGoal = _activeGoal;
-            bestAction = _activeGoal.activeAction;
+            bestGoal = activeGoal;
+            bestAction = activeGoal.activeAction;
         }
 
-        // find the highest priority goal that can run
+        // loop through all the goals and find the highest priority goal that can run
         foreach (var goal in _goals)
         {
             // update the goal priority
@@ -79,11 +88,13 @@ public class GoapAgent : MonoBehaviour
                     }
                 }
                 
+                // if there is a best action, set the best goal to the current goal
                 if (bestAction != null)
                     bestGoal = goal;
             }
         }
 
+        // if there is no best goal, log an error and return
         if (bestGoal == null)
         {
             Debug.LogError("No goal can be satisfied for " + gameObject.name);
@@ -91,22 +102,25 @@ public class GoapAgent : MonoBehaviour
         }
 
         // if the best goal is different from the active goal, change the active goal to the best goal
-        if (_activeGoal != bestGoal)
+        if (activeGoal != bestGoal)
         {
-            // if the active goal is not null, put it to sleep
-            if (_activeGoal != null)
-                _activeGoal.GoToSleep();
+            // if there is an active goal, put it to sleep
+            if (activeGoal != null)
+                activeGoal.GoToSleep();
             
-            _activeGoal = bestGoal;
-            _activeGoal.ChangeAction(bestAction);
+            // set the active goal to the new best goal and change the active action to the best action
+            activeGoal = bestGoal;
+            activeGoal.ChangeAction(bestAction);
             
+            // wake up the best goal
             bestGoal.WakeUp();
         }
+        // else if the best goal is the same as the active goal, but the best action is not the current active action, change the active action to the best action
         else if (bestAction != bestGoal.activeAction)
         {
-            // if the best action is different from the active action, change the active action to the best action
+            // if the cost of the best action is less than the cost of the current active action, change the active action to the best action (for when a goal has multiple actions that can satisfy it)
             if (bestAction.ActionCost() < bestGoal.activeAction.ActionCost())
-                _activeGoal.ChangeAction(bestAction);
+                activeGoal.ChangeAction(bestAction);
         }
     }
 }

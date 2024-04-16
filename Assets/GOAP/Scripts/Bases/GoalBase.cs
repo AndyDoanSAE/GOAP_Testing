@@ -5,19 +5,18 @@ using UnityEngine;
 
 public class GoalBase : MonoBehaviour
 {
-    [Range(0, 100), Tooltip("This is the priority of the goal; higher number = higher priority")]
+    [Header("Main Goal Settings")]
+    [Tooltip("This is the unique name of the goal; used to identify the goal.")]
+    public string uniqueName = "Goal Name";
+    [Range(0, 100), Tooltip("This is the priority of the goal; higher number = higher priority.")]
     public int priority;
     
-    [Tooltip("This is the unique name of the goal; used to identify the goal")]
-    public string uniqueName = "Goal name";
-    
-    [Tooltip("Amount of time the goal hasn't been running")]
+    [Header("Main Idle Settings")]
+    [Tooltip("Amount of time the goal hasn't been running.")]
     public float idleTime;
-    
-    [Tooltip("Time the goal has to remain idle before it can run again")]
+    [Tooltip("Time the goal has to remain idle before it can run again.")]
     public float idleTimeThreshold = 10f;
-
-    [Tooltip("Determines if the idle time threshold has been reached")]
+    [Tooltip("Determines if the idle time threshold has been reached.")]
     public bool idleThresholdReached;
     
     [HideInInspector] public ActionBase activeAction;                                                                   // this is the action that is currently being run by the agent
@@ -31,11 +30,13 @@ public class GoalBase : MonoBehaviour
 
     public virtual void Update()
     {
+        // if the agent is not tired and the goal has not been run in a while
         if (!idleThresholdReached)
         {
             idleTime += Time.deltaTime;
         }
 
+        // if the idle time threshold has been reached
         if (idleTime >= idleTimeThreshold)
         {
             idleThresholdReached = true;
@@ -55,7 +56,7 @@ public class GoalBase : MonoBehaviour
             return true;
         }
         
-        agent._activeGoal = null;
+        agent.activeGoal = null;
         return false;
     }
 
@@ -64,11 +65,13 @@ public class GoalBase : MonoBehaviour
         activeAction.RunAction();
     }
 
-    public virtual void ChangeAction(ActionBase newAction)                                                              // this is a function that is called by the agent when it changes the action
+    public void ChangeAction(ActionBase newAction)                                                                      // this is a function that is called by the agent when it changes the action
     {
+        // put the old action to sleep
         if (activeAction != null)
             activeAction.SleepAction();
-            
+        
+        // change the action
         activeAction = newAction;
         activeAction.ResetAction();
     }
