@@ -108,7 +108,5 @@ public class GoapAgent : MonoBehaviour
             if (bestAction.ActionCost() < bestGoal.activeAction.ActionCost())
                 _activeGoal.ChangeAction(bestAction);
         }
-        
-        Debug.Log("Best goal is " + bestGoal);
     }
 }
